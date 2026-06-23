@@ -17,7 +17,9 @@ def capture_post(driver, post_url: str, save_path: str, filename: str) -> None:
         EC.presence_of_element_located((By.CSS_SELECTOR, config.POST_DETAIL_PANEL_SELECTOR))
     )
     time.sleep(1)
-    panel.screenshot(os.path.join(save_path, filename))
+    full_path = os.path.join(save_path, filename)
+    if not panel.screenshot(full_path):
+        raise RuntimeError(f"스크린샷 저장 실패: {full_path}")
 
 
 def capture_all_posts(driver, post_links, save_path, prefix, on_progress=None) -> list[str]:

@@ -1,3 +1,5 @@
+import logging
+import os
 import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -88,6 +90,12 @@ class App(tk.Tk):
 
     def _run_pipeline(self, username, password, url, save_path, prefix):
         driver = None
+        log_path = os.path.join(save_path, "capture_log.txt")
+        log_handler = logging.FileHandler(log_path, encoding="utf-8")
+        log_handler.setLevel(logging.INFO)
+        logging.getLogger().addHandler(log_handler)
+        logging.getLogger().setLevel(logging.INFO)
+
         try:
             self._set_status("Chrome 실행 중...")
             driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -119,10 +127,15 @@ class App(tk.Tk):
                 on_progress=lambda i, t: self._set_status(f"{i}/{t} 캡처 중..."),
             )
 
-            self._set_status(f"완료, {len(saved)}개 캡처됨")
+            failed = len(links) - len(saved)
+            self._set_status(
+                f"완료, {len(saved)}개 캡처됨, {failed}개 실패 (로그: {log_path})"
+            )
         except Exception as exc:
-            self._set_status(f"오류 발생: {exc}")
+            self._set_status(f"오류 발생: {exc} (로그: {log_path})")
         finally:
+            logging.getLogger().removeHandler(log_handler)
+            log_handler.close()
             if driver:
                 driver.quit()
 
