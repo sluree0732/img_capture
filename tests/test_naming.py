@@ -33,3 +33,11 @@ def test_has_existing_captures_true_when_files_present(tmp_path):
 
 def test_has_existing_captures_false_when_folder_empty(tmp_path):
     assert has_existing_captures(str(tmp_path), "대성") is False
+
+
+def test_find_existing_capture_files_escapes_glob_metacharacters_in_prefix(tmp_path):
+    (tmp_path / "[대성]_인스타_카드뉴스01.png").write_text("x")
+
+    result = find_existing_capture_files(str(tmp_path), "[대성]")
+
+    assert result == ["[대성]_인스타_카드뉴스01.png"]
