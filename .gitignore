@@ -1,0 +1,10 @@
+.bkit/
+__pycache__/
+*.pyc
+.venv/
+venv/
+build/
+dist/
+*.spec
+session_*.json
+*.png
