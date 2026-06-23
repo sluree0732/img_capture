@@ -1,8 +1,8 @@
 LOGIN_URL = "https://www.instagram.com/accounts/login/"
 
-USERNAME_INPUT_SELECTOR = "input[name='username']"
-PASSWORD_INPUT_SELECTOR = "input[name='password']"
-LOGIN_BUTTON_SELECTOR = "button[type='submit']"
+USERNAME_INPUT_SELECTOR = "input[name='email']"
+PASSWORD_INPUT_SELECTOR = "input[name='pass']"
+LOGIN_BUTTON_SELECTOR = "div[role='button'][aria-label='로그인']"
 
 POST_LINK_SELECTOR = "article a[href*='/p/']"
 POST_DETAIL_PANEL_SELECTOR = "article"
